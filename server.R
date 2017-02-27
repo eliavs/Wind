@@ -40,18 +40,18 @@ shinyServer(function(input, output,session) {
   output$plot <- renderPlot({
   if(is.null(input$bugs)){return()}
   if(input$pollutant=="no pollutant"){
-  data<-userdata()
-  data[,input$ws]<-as.numeric(as.character(data[,input$ws]))
-  hist(data[,input$ws], main="wind speed histogram", freq=FALSE)
+  dat<-userdata()
+  dat[,input$ws]<-as.numeric(as.character(dat[,input$ws]))
+  hist(dat[,input$ws], main="wind speed histogram", freq=FALSE)
   }
   else
   {
- data<-userdata()
-  data[,input$ws]<-as.numeric(as.character(data[,input$ws]))
-  data[,input$pollutant]<-as.numeric(as.character(data[,input$pollutant]))
+ dat<-userdata()
+  dat[,input$ws]<-as.numeric(as.character(dat[,input$ws]))
+  dat[,input$pollutant]<-as.numeric(as.character(dat[,input$pollutant]))
     	par(mfrow=c(1,2))
-		hist(data[,input$ws], main="wind speed histogram", freq=FALSE)
-		hist(data[,input$pollutant], main=paste(input$pollutant," histogram"), freq=FALSE)
+		hist(dat[,input$ws], main="wind speed histogram", freq=FALSE)
+		hist(dat[,input$pollutant], main=paste(input$pollutant," histogram"), freq=FALSE)
 		}
 	  })
 
@@ -66,15 +66,15 @@ shinyServer(function(input, output,session) {
   ##################wind rose################
   #build the wind rose
 plotwindrose<-reactive(function() {
-        data<-userdata()
+        dat<-userdata()
 		angle<-360/as.numeric(input$directions)
-  data[,input$ws]<-as.numeric(as.character(data[,input$ws]))
-  data[,input$wd]<-as.numeric(as.character(data[,input$wd]))
+  dat[,input$ws]<-as.numeric(as.character(dat[,input$ws]))
+  dat[,input$wd]<-as.numeric(as.character(dat[,input$wd]))
   if(input$sorted=="no sorting"){
-  p<-windRose(data,ws=input$ws, wd=input$wd,angle=angle)
+  p<-windRose(dat,ws=input$ws, wd=input$wd,angle=angle)
   }
   else{
-  p<-windRose(data,type=input$sorted,ws=input$ws, wd=input$wd,angle=angle)
+  p<-windRose(dat,type=input$sorted,ws=input$ws, wd=input$wd,angle=angle)
   }
   })
   #show the wind rose
@@ -92,16 +92,16 @@ plotwindrose<-reactive(function() {
   ##################pollution rose################
   #build the pollution rose
   plotpollutionrose<-reactive(function() {
-        data<-userdata()
-	data[,input$pollutant]<-as.numeric(as.character(data[,input$pollutant]))
-	data[,input$ws]<-as.numeric(as.character(data[,input$ws]))
-	data[,input$wd]<-as.numeric(as.character(data[,input$wd]))
+        dat<-userdata()
+	dat[,input$pollutant]<-as.numeric(as.character(dat[,input$pollutant]))
+	dat[,input$ws]<-as.numeric(as.character(dat[,input$ws]))
+	dat[,input$wd]<-as.numeric(as.character(dat[,input$wd]))
 	k<-as.numeric(input$k)
 	if(input$sorted=="no sorting"){
-	a<-polarPlot(data,wd=input$wd,x=input$ws,pollutant=input$pollutant,k=k )
+	a<-polarPlot(dat,wd=input$wd,x=input$ws,pollutant=input$pollutant,k=k )
 	}
 	else{
-   a<-polarPlot(data,wd=input$wd,x=input$ws,pollutant=input$pollutant,type=input$sorted, k=k)
+   a<-polarPlot(dat,wd=input$wd,x=input$ws,pollutant=input$pollutant,type=input$sorted, k=k)
    }
 		})
 		# show the pollution rose
