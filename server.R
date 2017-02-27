@@ -41,6 +41,7 @@ shinyServer(function(input, output,session) {
   if(is.null(input$bugs)){return()}
   if(input$pollutant=="no pollutant"){
   dat<-userdata()
+  if (is.null(dat))return(NULL)
   dat[,input$ws]<-as.numeric(as.character(dat[,input$ws]))
   hist(dat[,input$ws], main="wind speed histogram", freq=FALSE)
   }
